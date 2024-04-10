@@ -36,13 +36,19 @@ def delete_from_financial(engine, ticker):
         session.commit()
 
 
+def select_all_companies(engine):
+    with Session(engine) as session:
+        stmt = select(Company).order_by(Company.ticker)
+        result = session.execute(stmt)
+        companies = result.scalars().all()
+        return companies
+
+
 def select_data_from_company(engine, search_string):
     with Session(engine) as session:
         # Construct a query to select companies where the name contains `search_string`
         stmt = select(Company).where(Company.name.like(f"%{search_string}%"))
         result = session.execute(stmt)
-
-        # Fetch all results
         companies = result.scalars().all()
         return companies
 

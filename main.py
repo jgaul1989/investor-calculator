@@ -5,7 +5,7 @@ from models.financial import Financial
 from utils.helper import (show_crud_menu, show_main_menu, show_top_ten, read_csv, preprocess_data,
                           get_company_info, get_company_financials)
 from crud.operations import (insert_data, select_data_from_company, select_financials,
-                             update_company_financial, delete_from_financial, delete_from_company)
+                             update_company_financial, delete_from_financial, delete_from_company, select_all_companies)
 
 
 def import_data(engine):
@@ -86,13 +86,19 @@ def delete_company(engine):
         print("Company deleted successfully!")
 
 
+def list_all_companies(engine):
+    companies = select_all_companies(engine)
+    for company in companies:
+        print(f"{company}")
+
+
 def crud_operations_menu(engine):
     show_crud_menu()
     print("Enter an option:")
     crud_operation = input("")
 
-    if crud_operation in ["0", "5"]:
-        print("Not implemented!")
+    if crud_operation == "0":
+        pass
     elif crud_operation == "1":
         create_company(engine)
     elif crud_operation == "2":
@@ -101,6 +107,8 @@ def crud_operations_menu(engine):
         update_company(engine)
     elif crud_operation == "4":
         delete_company(engine)
+    elif crud_operation == "5":
+        list_all_companies(engine)
     else:
         print("Invalid option!")
 

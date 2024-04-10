@@ -9,3 +9,6 @@ class Company(Base):
     ticker: Mapped[str] = mapped_column(String(), primary_key=True)
     name: Mapped[str] = mapped_column(String())
     sector: Mapped[str] = mapped_column(String())
+
+    def __repr__(self):
+        return f'{self.ticker} {self.name} {self.sector}'

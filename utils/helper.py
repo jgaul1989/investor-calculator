@@ -58,11 +58,12 @@ def show_crud_menu():
 
 
 def show_top_ten():
+    print("")
     print("TOP TEN MENU")
     print("0 Back")
     print("1 List by ND/EBITDA")
     print("2 List by ROE")
-    print("3 List by ROA")
+    print("3 List by ROA\n")
 
 
 def preprocess_data(data_set):
