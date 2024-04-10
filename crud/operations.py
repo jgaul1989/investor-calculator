@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from models.company import Company
 from models.financial import Financial
 
@@ -12,13 +12,27 @@ def insert_data(engine, model_class, data):
         session.commit()
 
 
-def update_company_financials(engine, ticker, data):
+def update_company_financial(engine, ticker, data):
     with Session(engine) as session:
         stmt = select(Financial).where(Financial.ticker == ticker)
         result = session.scalars(stmt).one()
         for key, value in data.items():
             if hasattr(result, key):
                 setattr(result, key, value)
+        session.commit()
+
+
+def delete_from_company(engine, ticker):
+    with Session(engine) as session:
+        stmt = delete(Company).where(Company.ticker == ticker)
+        session.execute(stmt)
+        session.commit()
+
+
+def delete_from_financial(engine, ticker):
+    with Session(engine) as session:
+        stmt = delete(Financial).where(Financial.ticker == ticker)
+        session.execute(stmt)
         session.commit()
 
 

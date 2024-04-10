@@ -4,7 +4,8 @@ from models.base import Base
 from models.financial import Financial
 from utils.helper import (show_crud_menu, show_main_menu, show_top_ten, read_csv, preprocess_data,
                           get_company_info, get_company_financials)
-from crud.operations import insert_data, select_data_from_company, select_financials, update_company_financials
+from crud.operations import (insert_data, select_data_from_company, select_financials,
+                             update_company_financial, delete_from_financial, delete_from_company)
 
 
 def import_data(engine):
@@ -73,8 +74,16 @@ def update_company(engine):
         data = {'ebitda': ebitda, 'sales': sales, 'net_profit': net_profit, 'market_price': market_price,
                 'net_debt': net_debt, 'assets': assets, 'equity': equity, 'cash_equivalents': cash_equivalents,
                 'liabilities': liabilities}
-        update_company_financials(engine, company_financials.ticker, data)
+        update_company_financial(engine, company_financials.ticker, data)
         print("Company updated successfully!")
+
+
+def delete_company(engine):
+    company_financials = select_company(engine)
+    if company_financials is not None:
+        delete_from_financial(engine, company_financials.ticker)
+        delete_from_company(engine, company_financials.ticker)
+        print("Company deleted successfully!")
 
 
 def crud_operations_menu(engine):
@@ -82,7 +91,7 @@ def crud_operations_menu(engine):
     print("Enter an option:")
     crud_operation = input("")
 
-    if crud_operation in ["0", "4", "5"]:
+    if crud_operation in ["0", "5"]:
         print("Not implemented!")
     elif crud_operation == "1":
         create_company(engine)
@@ -90,6 +99,8 @@ def crud_operations_menu(engine):
         read_company(engine)
     elif crud_operation == "3":
         update_company(engine)
+    elif crud_operation == "4":
+        delete_company(engine)
     else:
         print("Invalid option!")
 
