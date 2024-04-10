@@ -61,6 +61,19 @@ def select_company_with_ticker(engine, ticker):
         return company
 
 
+def select_top_10_tickers_by_nd_ebitda(engine):
+    with Session(engine) as session:
+        nd_ebitda = (Financial.net_debt / Financial.ebitda).label('ND/EBITDA')
+        stmt = (
+            select(Financial.ticker, nd_ebitda)
+            .order_by(nd_ebitda.desc())
+            .limit(10)
+        )
+        result = session.execute(stmt)
+        data = result.all()
+        return data
+
+
 def select_financials(engine, ticker):
     with Session(engine) as session:
         stmt = select(Financial).where(Financial.ticker == ticker)

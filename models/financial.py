@@ -26,5 +26,4 @@ class Financial(Base):
         print(f"ND/EBITDA = {safe_divide_and_round(self.net_debt, self.ebitda)}")
         print(f"ROE = {safe_divide_and_round(self.net_profit, self.equity)}")
         print(f"ROA = {safe_divide_and_round(self.net_profit, self.assets)}")
-        print(f"LA = {safe_divide_and_round(self.liabilities, self.assets)}")
-        print("")
+        print(f"L/A = {safe_divide_and_round(self.liabilities, self.assets)}")

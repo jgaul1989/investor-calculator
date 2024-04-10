@@ -6,7 +6,7 @@ from utils.helper import (show_crud_menu, show_main_menu, show_top_ten, read_csv
                           get_company_info, get_company_financials)
 from crud.operations import (insert_data, select_data_from_company, select_financials,
                              update_company_financial, delete_from_financial, delete_from_company,
-                             select_all_companies, select_company_with_ticker)
+                             select_all_companies, select_company_with_ticker, select_top_10_tickers_by_nd_ebitda)
 
 
 def import_data(engine):
@@ -36,15 +36,24 @@ def select_company_financials(engine):
         return select_financials(engine, ticker)
 
 
-def top_ten_operations():
+def top_ten_operations_menu(engine):
     show_top_ten()
     print("Enter an option:")
     command = input("")
 
-    if command in ["0", "1", "2", "3"]:
+    if command in ["0", "2", "3"]:
         print("Not implemented!")
+    elif command == "1":
+        show_top_10_tickers_by_nd_ebitda(engine)
     else:
         print("Invalid option!")
+
+
+def show_top_10_tickers_by_nd_ebitda(engine):
+    companies = select_top_10_tickers_by_nd_ebitda(engine)
+    print("TICKER ND/EBITDA")
+    for ticker, ratio in companies:
+        print(f"{ticker} {round(ratio, 2)}")
 
 
 def create_company(engine):
@@ -89,6 +98,7 @@ def delete_company(engine):
 
 
 def list_all_companies(engine):
+    print("COMPANY LIST")
     companies = select_all_companies(engine)
     for company in companies:
         print(f"{company}")
@@ -131,7 +141,7 @@ if __name__ == "__main__":
         if user_command == "1":
             crud_operations_menu(engine)
         elif user_command == "2":
-            top_ten_operations()
+            top_ten_operations_menu(engine)
         elif user_command not in ["0", "1", "2"]:
             print("Invalid option!")
 
