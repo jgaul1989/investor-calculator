@@ -2,6 +2,7 @@ from .base import Base
 from sqlalchemy import String, Float
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
+from utils.helper import safe_divide_and_round
 
 
 class Financial(Base):
@@ -16,3 +17,14 @@ class Financial(Base):
     equity: Mapped[float] = mapped_column(Float(), nullable=True)
     cash_equivalents: Mapped[float] = mapped_column(Float(), nullable=True)
     liabilities: Mapped[float] = mapped_column(Float(), nullable=True)
+
+    def print_financials(self):
+        print(self.ticker)
+        print(f"P/E = {safe_divide_and_round(self.market_price, self.net_profit)}")
+        print(f"P/S = {safe_divide_and_round(self.market_price, self.sales)}")
+        print(f"P/B = {safe_divide_and_round(self.market_price, self.assets)}")
+        print(f"ND/EBITDA = {safe_divide_and_round(self.net_debt, self.ebitda)}")
+        print(f"ROE = {safe_divide_and_round(self.net_profit, self.equity)}")
+        print(f"ROA = {safe_divide_and_round(self.net_profit, self.assets)}")
+        print(f"LA = {safe_divide_and_round(self.liabilities, self.assets)}")
+        print("")

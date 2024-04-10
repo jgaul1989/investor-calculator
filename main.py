@@ -2,33 +2,18 @@ from models.company import Company
 from sqlalchemy import create_engine
 from models.base import Base
 from models.financial import Financial
-from utils.helper import read_csv, preprocess_data
-from crud.operations import insert_data
+from utils.helper import show_crud_menu, show_main_menu, show_top_ten, read_csv, preprocess_data
+from crud.operations import insert_data, select_data_from_company, select_financials
 
 
-def show_main_menu():
-    print("MAIN MENU")
-    print("0 Exit")
-    print("1 CRUD operations")
-    print("2 Show top ten companies by criteria")
+def import_data(engine):
+    companies_data = read_csv('data/companies.csv')
+    companies_data = preprocess_data(companies_data)
+    insert_data(engine, Company, companies_data)
 
-
-def show_crud_menu():
-    print("CRUD MENU")
-    print("0 Back")
-    print("1 Create a company")
-    print("2 Read a company")
-    print("3 Update a company")
-    print("4 Delete a company")
-    print("5 List all companies")
-
-
-def show_top_ten():
-    print("TOP TEN MENU")
-    print("0 Back")
-    print("1 List by ND/EBITDA")
-    print("2 List by ROE")
-    print("3 List by ROA")
+    financial_data = read_csv('data/financial.csv')
+    financial_data = preprocess_data(financial_data)
+    insert_data(engine, Financial, financial_data)
 
 
 def top_ten_operations():
@@ -77,27 +62,37 @@ def create_company(engine):
     print("Company created successfully!")
 
 
+def read_company(engine):
+    print("Enter company name:")
+    name = input("")
+    companies = select_data_from_company(engine, name)
+
+    if len(companies) == 0:
+        print("Company not found!")
+    else:
+        for index, company in enumerate(companies):
+            print(f"{index} {company.name}")
+        print("Enter a company number:")
+        number = int(input(""))
+        ticker = companies[number].ticker
+        company_name = companies[number].name
+        company_financials = select_financials(engine, ticker)
+        company_financials.print_financials()
+
+
 def crud_operations_menu(engine):
     show_crud_menu()
     print("Enter an option:")
     crud_operation = input("")
 
-    if crud_operation in ["0", "2", "3", "4", "5"]:
+    if crud_operation in ["0", "3", "4", "5"]:
         print("Not implemented!")
     elif crud_operation == "1":
         create_company(engine)
+    elif crud_operation == "2":
+        read_company(engine)
     else:
         print("Invalid option!")
-
-
-def import_data(engine):
-    companies_data = read_csv('data/companies.csv')
-    companies_data = preprocess_data(companies_data)
-    insert_data(engine, Company, companies_data)
-
-    financial_data = read_csv('data/financial.csv')
-    financial_data = preprocess_data(financial_data)
-    insert_data(engine, Financial, financial_data)
 
 
 if __name__ == "__main__":
@@ -106,9 +101,9 @@ if __name__ == "__main__":
     # import_data(engine)
 
     user_command = ""
-
+    print("Welcome to the Investor Program!")
     while user_command != "0":
-        print("Welcome to the Investor Program!")
+
         show_main_menu()
         print("Enter an option:")
         user_command = input("")
