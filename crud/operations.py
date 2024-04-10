@@ -12,6 +12,16 @@ def insert_data(engine, model_class, data):
         session.commit()
 
 
+def update_company_financials(engine, ticker, data):
+    with Session(engine) as session:
+        stmt = select(Financial).where(Financial.ticker == ticker)
+        result = session.scalars(stmt).one()
+        for key, value in data.items():
+            if hasattr(result, key):
+                setattr(result, key, value)
+        session.commit()
+
+
 def select_data_from_company(engine, search_string):
     with Session(engine) as session:
         # Construct a query to select companies where the name contains `search_string`

@@ -14,6 +14,38 @@ def show_main_menu():
     print("2 Show top ten companies by criteria\n")
 
 
+def get_company_info() -> tuple:
+    print("Enter ticker (in the format 'MOON'):")
+    ticker = input("")
+    print("Enter company (in the format 'Moon Corp'):")
+    name = input("")
+    print("Enter industries (in the format 'Technology'):")
+    sector = input("")
+    return ticker, name, sector
+
+
+def get_company_financials() -> tuple:
+    print("Enter ebitda (in the format '987654321'):")
+    ebitda = float(input(""))
+    print("Enter sales (in the format '987654321'):")
+    sales = float(input(""))
+    print("Enter net profit (in the format '987654321'):")
+    net_profit = float(input(""))
+    print("Enter market price (in the format '987654321'):")
+    market_price = float(input(""))
+    print("Enter net debt (in the format '987654321'):")
+    net_debt = float(input(""))
+    print("Enter assets (in the format '987654321'):")
+    assets = float(input(""))
+    print("Enter equity (in the format '987654321'):")
+    equity = float(input(""))
+    print("Enter cash equivalents (in the format '987654321'):")
+    cash_equivalents = float(input(""))
+    print("Enter liabilities (in the format '987654321'):")
+    liabilities = float(input(""))
+    return ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents, liabilities
+
+
 def show_crud_menu():
     print("")
     print("CRUD MENU")
