@@ -74,6 +74,32 @@ def select_top_10_tickers_by_nd_ebitda(engine):
         return data
 
 
+def select_top_10_tickers_roe(engine):
+    with Session(engine) as session:
+        roe = (Financial.net_profit / Financial.equity).label('ROE')
+        stmt = (
+            select(Financial.ticker, roe)
+            .order_by(roe.desc())
+            .limit(10)
+        )
+        result = session.execute(stmt)
+        data = result.all()
+        return data
+
+
+def select_top_10_tickers_roa(engine):
+    with Session(engine) as session:
+        roa = (Financial.net_profit / Financial.assets).label('ROA')
+        stmt = (
+            select(Financial.ticker, roa)
+            .order_by(roa.desc())
+            .limit(10)
+        )
+        result = session.execute(stmt)
+        data = result.all()
+        return data
+
+
 def select_financials(engine, ticker):
     with Session(engine) as session:
         stmt = select(Financial).where(Financial.ticker == ticker)

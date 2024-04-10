@@ -6,7 +6,8 @@ from utils.helper import (show_crud_menu, show_main_menu, show_top_ten, read_csv
                           get_company_info, get_company_financials)
 from crud.operations import (insert_data, select_data_from_company, select_financials,
                              update_company_financial, delete_from_financial, delete_from_company,
-                             select_all_companies, select_company_with_ticker, select_top_10_tickers_by_nd_ebitda)
+                             select_all_companies, select_company_with_ticker, select_top_10_tickers_by_nd_ebitda,
+                             select_top_10_tickers_roe, select_top_10_tickers_roa)
 
 
 def import_data(engine):
@@ -41,17 +42,25 @@ def top_ten_operations_menu(engine):
     print("Enter an option:")
     command = input("")
 
-    if command in ["0", "2", "3"]:
-        print("Not implemented!")
+    if command == "0":
+        pass
     elif command == "1":
-        show_top_10_tickers_by_nd_ebitda(engine)
+        print("TICKER ND/EBITDA")
+        companies = select_top_10_tickers_by_nd_ebitda(engine)
+        show_top_10_tickers(companies)
+    elif command == "2":
+        print("TICKER ROE")
+        companies = select_top_10_tickers_roe(engine)
+        show_top_10_tickers(companies)
+    elif command == "3":
+        print("TICKER ROA")
+        companies = select_top_10_tickers_roa(engine)
+        show_top_10_tickers(companies)
     else:
         print("Invalid option!")
 
 
-def show_top_10_tickers_by_nd_ebitda(engine):
-    companies = select_top_10_tickers_by_nd_ebitda(engine)
-    print("TICKER ND/EBITDA")
+def show_top_10_tickers(companies):
     for ticker, ratio in companies:
         print(f"{ticker} {round(ratio, 2)}")
 
