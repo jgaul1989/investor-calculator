@@ -5,7 +5,8 @@ from models.financial import Financial
 from utils.helper import (show_crud_menu, show_main_menu, show_top_ten, read_csv, preprocess_data,
                           get_company_info, get_company_financials)
 from crud.operations import (insert_data, select_data_from_company, select_financials,
-                             update_company_financial, delete_from_financial, delete_from_company, select_all_companies)
+                             update_company_financial, delete_from_financial, delete_from_company,
+                             select_all_companies, select_company_with_ticker)
 
 
 def import_data(engine):
@@ -18,7 +19,7 @@ def import_data(engine):
     insert_data(engine, Financial, financial_data)
 
 
-def select_company(engine):
+def select_company_financials(engine):
     print("Enter company name:")
     name = input("")
     companies = select_data_from_company(engine, name)
@@ -29,7 +30,7 @@ def select_company(engine):
     else:
         for index, company in enumerate(companies):
             print(f"{index} {company.name}")
-        print("Enter a company number:")
+        print("Enter company number:")
         number = int(input(""))
         ticker = companies[number].ticker
         return select_financials(engine, ticker)
@@ -61,13 +62,14 @@ def create_company(engine):
 
 
 def read_company(engine):
-    company_financials = select_company(engine)
+    company_financials = select_company_financials(engine)
     if company_financials is not None:
-        company_financials.print_financials()
+        company = select_company_with_ticker(engine, company_financials.ticker)
+        company_financials.print_financials(company.name)
 
 
 def update_company(engine):
-    company_financials = select_company(engine)
+    company_financials = select_company_financials(engine)
     if company_financials is not None:
         (ebitda, sales, net_profit, market_price, net_debt,
          assets, equity, cash_equivalents, liabilities) = get_company_financials()
@@ -79,7 +81,7 @@ def update_company(engine):
 
 
 def delete_company(engine):
-    company_financials = select_company(engine)
+    company_financials = select_company_financials(engine)
     if company_financials is not None:
         delete_from_financial(engine, company_financials.ticker)
         delete_from_company(engine, company_financials.ticker)

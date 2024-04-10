@@ -18,8 +18,8 @@ class Financial(Base):
     cash_equivalents: Mapped[float] = mapped_column(Float(), nullable=True)
     liabilities: Mapped[float] = mapped_column(Float(), nullable=True)
 
-    def print_financials(self):
-        print(self.ticker)
+    def print_financials(self, company_name: str):
+        print(f"{self.ticker} {company_name}")
         print(f"P/E = {safe_divide_and_round(self.market_price, self.net_profit)}")
         print(f"P/S = {safe_divide_and_round(self.market_price, self.sales)}")
         print(f"P/B = {safe_divide_and_round(self.market_price, self.assets)}")

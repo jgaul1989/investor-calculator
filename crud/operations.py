@@ -53,6 +53,14 @@ def select_data_from_company(engine, search_string):
         return companies
 
 
+def select_company_with_ticker(engine, ticker):
+    with Session(engine) as session:
+        stmt = select(Company).where(Company.ticker == ticker)
+        result = session.execute(stmt)
+        company = result.scalars().one()
+        return company
+
+
 def select_financials(engine, ticker):
     with Session(engine) as session:
         stmt = select(Financial).where(Financial.ticker == ticker)

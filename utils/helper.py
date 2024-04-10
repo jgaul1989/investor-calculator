@@ -7,11 +7,10 @@ def read_csv(file_name):
 
 
 def show_main_menu():
-    print("")
     print("MAIN MENU")
     print("0 Exit")
     print("1 CRUD operations")
-    print("2 Show top ten companies by criteria\n")
+    print("2 Show top ten companies by criteria")
 
 
 def get_company_info() -> tuple:
@@ -47,23 +46,21 @@ def get_company_financials() -> tuple:
 
 
 def show_crud_menu():
-    print("")
     print("CRUD MENU")
     print("0 Back")
     print("1 Create a company")
     print("2 Read a company")
     print("3 Update a company")
     print("4 Delete a company")
-    print("5 List all companies\n")
+    print("5 List all companies")
 
 
 def show_top_ten():
-    print("")
     print("TOP TEN MENU")
     print("0 Back")
     print("1 List by ND/EBITDA")
     print("2 List by ROE")
-    print("3 List by ROA\n")
+    print("3 List by ROA")
 
 
 def preprocess_data(data_set):
